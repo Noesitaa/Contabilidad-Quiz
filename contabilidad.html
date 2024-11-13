@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Seguros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4a7a8c;
+        }
+        .question {
+            font-size: 18px;
+            color: #333;
+        }
+        .options {
+            margin-top: 20px;
+        }
+        .option {
+            background-color: #f7f7f7;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #e0f7fa;
+        }
+        .option.selected {
+            background-color: #d1e7f1;
+        }
+        .btn-next {
+            display: block;
+            width: 100%;
+            background-color: #4a7a8c;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-next:hover {
+            background-color: #3d6575;
+        }
+        .result {
+            font-size: 20px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Multiple Choice Contabilidad</h1>
+        <div id="quiz-content">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <button id="next-btn" class="btn-next" onclick="nextQuestion()">Siguiente</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // Definición de las preguntas y respuestas
+        const preguntas = [
+            {
+                pregunta: "¿Cómo puede verificarse la solvencia financiera de una aseguradora, en relación con sus Compromisos Técnicos Exigibles?",
+                opciones: [
+                    "Comparando Siniestros Pagados con Disponibilidades e Inversiones.",
+                    "Comparando Primas Netas de Retención con Disponibilidades e Inversiones.",
+                    "Comparando los siniestros pendientes con los siniestros pagados.",
+                    "Comparando sus Disponibilidades e Inversiones con los compromisos exigibles."
+                ],
+                respuesta_correcta: "Comparando sus Disponibilidades e Inversiones con los compromisos exigibles."
+            },
+            {
+                pregunta: "¿Qué son las reservas técnicas?",
+                opciones: [
+                    "Se denomina reserva técnica al patrimonio de las empresas aseguradoras.",
+                    "Se llama Reserva Técnica al fondo común de primas.",
+                    "Son los fondos aplicables únicamente a los siniestros incurridos pero no conocidos por la Entidad aseguradora.",
+                    "Son fondos que las empresas aseguradoras deben conservar e invertir, y que constituyen el respaldo de las deudas estimadas por los siniestros que se abonaran en el futuro."
+                ],
+                respuesta_correcta: "Son fondos que las empresas aseguradoras deben conservar e invertir, y que constituyen el respaldo de las deudas estimadas por los siniestros que se abonaran en el futuro."
+            },
+            {
+                pregunta: "¿Cuál es la función de la reserva por siniestros incurridos pero no conocidos por la entidad aseguradora?",
+                opciones: [
+                    "Poder abonar los siniestros conocidos y pendientes de pago.",
+                    "Permitir una prima nivelada en los seguros de vida.",
+                    "Reservar fondos en base a la experiencia siniestral para afrontar siniestros no denunciados.",
+                    "Cumple la misma función que los 'capitales mínimos' exigidos por la SSN para comenzar a operar."
+                ],
+                respuesta_correcta: "Reservar fondos en base a la experiencia siniestral para afrontar siniestros no denunciados."
+            },
+            {
+                pregunta: "¿Por qué puede sostenerse que las entidades aseguradoras asumen una operatoria que invierte los modelos corrientes de la mayoría de las actividades económicas?",
+                opciones: [
+                    "Porque primero se compran los insumos, después se los transforma y, finalmente, se los vende ingresando Capital.",
+                    "Porque en las empresas de servicios se perciben las retribuciones luego de haber realizado la prestación.",
+                    "Porque las actividades económicas con modelo no invertido requieren de créditos.",
+                    "Porque en la actividad aseguradora primero se percibe la prima, y los Siniestros, suelen ocurrir mucho tiempo después."
+                ],
+                respuesta_correcta: "Porque en la actividad aseguradora primero se percibe la prima, y los Siniestros, suelen ocurrir mucho tiempo después."
+            },
+            {
+                pregunta: "¿Cuales son los tres pasivos que las Entidades Aseguradoras deben dar Cobertura según lo dispuesto por el Art. 35 de la ley 20.091?",
+                opciones: [
+                    "Acreedores por Premios a Devolver, Deudas Con Asegurados y Compromisos Técnicos.",
+                    "Acreedores por Premios a Devolver, Deudas con Asegurados y Deudas con Reaseguradores.",
+                    "Proveedores Varios, Acreedores Varios y Compromisos Técnicos.",
+                    "Compromisos Técnicos, Deudas con Asegurados y Deudas con Reaseguradores."
+                ],
+                respuesta_correcta: "Compromisos Técnicos, Deudas con Asegurados y Deudas con Reaseguradores."
+            },
+            {
+                pregunta: "¿Qué denominación se da en los Balances de las Compañías de Seguro a las 'Primas No Ganadas'?",
+                opciones: [
+                    "Deudores por Premios.",
+                    "Riesgos en Curso.",
+                    "Siniestros Pendientes de Pago.",
+                    "Comisiones a Pagar."
+                ],
+                respuesta_correcta: "Riesgos en Curso."
+            },
+            {
+                pregunta: "Si una compañía de seguros emite una póliza el 01/04/2020 cuya inicio de vigencia es 01/04/2020 y su fin de vigencia es 31/03/2021, el valor de la prima por todo el período de cobertura es de $3.600. ¿Cúal es el valor de la Reserva de Riesgos en curso al 30/06/2020?",
+                opciones: [
+                    "600,-",
+                    "2.400,-",
+                    "900,-",
+                    "2.700,-"
+                ],
+                respuesta_correcta: "2.700,-"
+            },
+            {
+                pregunta: "¿Cómo se dividen por ramos los gastos de Explotación según normativa de SSN?",
+                opciones: [
+                    "Proporcionalmente en función de las primas emitidas por cada ramo.",
+                    "Proporcionalmente en función de la cantidad de siniestros de cada ramo.",
+                    "Ninguna de las opciones es correcta.",
+                    "50 % en función de las Primas Emitidas por ramo y 50% en función a la cantidad de Siniestros por ramo."
+                ],
+                respuesta_correcta: "Ninguna de las opciones es correcta."
+            },
+            {
+                pregunta: "¿Qué se entiende por 'Déficit de Cobertura'?",
+                opciones: [
+                    "Un infraseguro.",
+                    "La omisión del aseguramiento de un riesgo.",
+                    "La insuficiencia de los Activos Computables para cubrir el monto de los pasivos exigibles.",
+                    "El resultado negativo de las operaciones."
+                ],
+                respuesta_correcta: "La insuficiencia de los Activos Computables para cubrir el monto de los pasivos exigibles."
+            },
+            {
+                pregunta: "La participación porcentual de cada aseguradora en la Producción Total de seguros del mercado argentino, es un Indicador de tipo:",
+                opciones: [
+                    "Índice",
+                    "Tasa",
+                    "Proporción.",
+                    "Promedio"
+                ],
+                respuesta_correcta: "Índice"
+            },
+            {
+                pregunta: "Si una compañía de seguros emite una póliza el 01/02/2022 cuya inicio de vigencia es 01/02/2022 y su fin de vigencia es 31/01/2023, el valor de la prima por todo el período de cobertura es de $3.600. ¿Cuál es el valor de la Reserva de Riesgos en curso al 30/06/2022?",
+                opciones: [
+                    "2.400,-",
+                    "900,-",
+                    "2.100,-",
+                    "3.600,-"
+                ],
+                respuesta_correcta: "2.400,-"
+            }
+        ];
+
+        // Función para mezclar el orden de las preguntas
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        shuffle(preguntas); // Mezclar las preguntas
+
+        function loadQuestion() {
+            const currentQuestion = preguntas[currentQuestionIndex];
+            document.getElementById("question").textContent = currentQuestion.pregunta;
+
+            shuffle(currentQuestion.opciones); // Mezclar las opciones de respuesta
+
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = "";
+            currentQuestion.opciones.forEach(option => {
+                const optionDiv = document.createElement("div");
+                optionDiv.classList.add("option");
+                optionDiv.textContent = option;
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        // Función para avanzar a la siguiente pregunta
+        function nextQuestion() {
+            const selectedOption = document.querySelector(".option.selected");
+            if (selectedOption) {
+                const currentQuestion = preguntas[currentQuestionIndex];
+                const selectedAnswer = selectedOption.textContent.trim();
+                const correctAnswer = currentQuestion.respuesta_correcta;
+
+                if (selectedAnswer === correctAnswer) {
+                    correctAnswers++;
+                    alert("¡Respuesta correcta!");
+                } else {
+                    alert(`Respuesta incorrecta. La respuesta correcta es: ${correctAnswer}`);
+                }
+
+                // Avanzar a la siguiente pregunta
+                currentQuestionIndex++;
+
+                if (currentQuestionIndex < preguntas.length) {
+                    loadQuestion();
+                } else {
+                    document.getElementById("quiz-content").style.display = "none";
+                    document.getElementById("result").textContent = `¡Has terminado el quiz! Respuestas correctas: ${correctAnswers} de ${preguntas.length}`;
+                }
+            } else {
+                alert("Por favor selecciona una opción antes de continuar.");
+            }
+        }
+
+        // Hacer que las opciones se puedan seleccionar
+        document.getElementById("options").addEventListener("click", function(event) {
+            if (event.target.classList.contains("option")) {
+                const selectedOption = document.querySelector(".option.selected");
+                if (selectedOption) {
+                    selectedOption.classList.remove("selected");
+                }
+                event.target.classList.add("selected");
+            }
+        });
+
+        // Cargar la primera pregunta al inicio
+        loadQuestion();
+    </script>
+</body>
+</html>
